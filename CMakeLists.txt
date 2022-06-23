@@ -22,7 +22,6 @@ add_executable(${PROJECT_NAME} ${SUBSYSTEM}
 	src/UIColorPreview.cpp
 	src/UIMainPalette.cpp
 	src/UISidePalette.cpp
-	src/util.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} ocom oui)
