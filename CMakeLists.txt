@@ -18,10 +18,6 @@ include_directories("include")
 
 add_executable(${PROJECT_NAME} ${SUBSYSTEM}
 	src/main.cpp
-	src/UIColorPicker.cpp
-	src/UIColorPreview.cpp
-	src/UIMainPalette.cpp
-	src/UISidePalette.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} ocom oui)
