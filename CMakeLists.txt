@@ -16,10 +16,9 @@ endif()
 
 include_directories("include")
 
-add_executable(${PROJECT_NAME} ${SUBSYSTEM}
-	 src/main.cpp
-	 	 src/main.cpp
-)
+file(GLOB SRC "src/*.cpp")
+
+add_executable(${PROJECT_NAME} ${SUBSYSTEM} ${SRC})
 
 target_link_libraries(${PROJECT_NAME} ocom oui)
 
