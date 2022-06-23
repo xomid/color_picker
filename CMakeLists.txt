@@ -17,7 +17,8 @@ endif()
 include_directories("include")
 
 add_executable(${PROJECT_NAME} ${SUBSYSTEM}
-	src/main.cpp
+	 src/main.cpp
+	 	 src/main.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} ocom oui)
