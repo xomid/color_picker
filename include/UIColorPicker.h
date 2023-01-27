@@ -30,7 +30,6 @@ public:
 	void process_event(OUI* element, uint32_t message, uint64_t param, bool bubbleUp) override;
 	void update_side_palette();
 	void update_main_palette();
-	void update_values(int im);
 	void update_fields(int srcChannel);
 	void webalize_color(Color& color);
 	void update_view(int triggerChannel, bool reset);

@@ -14,7 +14,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
 	if (argc > 1) {
 		if (!wcscmp(argv[1], L"--inspect")) {
 			auto wnd = wmg.get(0);
-			if (wnd) wnd->bDrawBoxModel = true;
+			if (wnd) wnd->show_box_model();
 		}
 	}
 	

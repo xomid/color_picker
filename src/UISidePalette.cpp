@@ -37,18 +37,17 @@ void UISidePalette::_gen_hue(Sheet& sheet, bool bWebColor) {
 	byte* data = sheet.data, * d;
 	if (height != 256) return;
 
-	float r, g, b, im, max, min, h, ins;
-	int val;
+	float r, g, b, im, max, min, h, ins, val;
 	byte bb, bg, br;
 
 	ins = 1.00f;
-	r = 255;
-	g = 0;
-	b = 0;
-	im = 255;
-	val = 0;
-	ins = im / 42.5;
-	max = 255 - ins, min = ins;
+	r = 255.f;
+	g = 0.f;
+	b = 0.f;
+	im = 255.f;
+	val = 0.f;
+	ins = im / 42.5f;
+	max = 255.f - ins, min = ins;
 
 	for (y = 0; y < 256; y++)
 	{
@@ -58,8 +57,8 @@ void UISidePalette::_gen_hue(Sheet& sheet, bool bWebColor) {
 				g += ins;
 			else
 			{
-				h = 255 - g;
-				g = 255;
+				h = 255.f - g;
+				g = 255.f;
 				r -= ins - h;
 			}
 		}
@@ -78,8 +77,8 @@ void UISidePalette::_gen_hue(Sheet& sheet, bool bWebColor) {
 				b += ins;
 			else
 			{
-				h = 255 - b;
-				b = 255;
+				h = 255.f - b;
+				b = 255.f;
 				g -= ins - h;
 			}
 		}
@@ -98,8 +97,8 @@ void UISidePalette::_gen_hue(Sheet& sheet, bool bWebColor) {
 				r += ins;
 			else
 			{
-				h = 255 - r;
-				r = 255;
+				h = 255.f - r;
+				r = 255.f;
 				b -= ins - h;
 			}
 		}
@@ -140,7 +139,7 @@ void UISidePalette::gen_sat(const Color& hint, bool bWebColor) {
 	byte* data = img.data, * d;
 	if (height != 256) return;
 
-	float n2, n3, r, g, b, * max, * mean, * min, m2, m3;
+	float n2, n3, r, g, b, * max, * mean, * min;
 	int ib, ig, ir;
 	byte bb, bg, br;
 

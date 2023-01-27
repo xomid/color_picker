@@ -176,99 +176,6 @@ void UIColorPicker::update_main_palette()
 		mainPalette.gen_blu(bWebColor ? lookupWebColor[sideValue] : sideValue, bWebColor);
 }
 
-void UIColorPicker::update_values(int im)
-{
-	/*int hue, sat, bri;
-	Point selector;
-
-	mainPalette.get_selector(selector);
-	sideValue = sidePalette.get_value();
-	auto hex = txtHex.text;
-	hue = atoi(numHue.get_number().str().c_str());
-	sat = atoi(numSat.get_number().str().c_str());
-	bri = atoi(numBri.get_number().str().c_str());
-	currentColor.r = atoi(numRed.get_number().str().c_str());
-	currentColor.g = atoi(numGrn.get_number().str().c_str());
-	currentColor.b = atoi(numBlu.get_number().str().c_str());
-
-	if (bWebColor) {
-		currentColor.r = lookupWebColor[currentColor.r];
-		currentColor.g = lookupWebColor[currentColor.r];
-		currentColor.b = lookupWebColor[currentColor.r];
-	}
-
-	if (channel < 3)
-	{
-		if ((im < 6 && im > 2) || im == 7) {
-			rgb_to_hsb(currentColor.r, currentColor.g, currentColor.b, hue, sat, bri);
-		}
-		else if (im == 6) {
-			currentColor.set(hex);
-			rgb_to_hsb(currentColor.r, currentColor.g, currentColor.b, hue, sat, bri);
-		}
-
-		if (channel == 0) {
-			sideValue = (int)(((hue / 360.5) * 255.000) + 0.5);
-			selector.x = (int)((sat * 2.5500) + 0.5);
-			selector.y = 255 - (int)((bri * 2.55) + 0.5);
-		}
-		else if (channel == 1)
-		{
-			sideValue = (int)(((sat / 100.00) * 255.000) + 0.5);
-			selector.x = (int)(((hue / 360.5) * 255.00) + 0.5);
-			selector.y = 255 - (int)((bri * 2.55) + 0.5);
-		}
-		else if (channel == 2)
-		{
-			sideValue = (int)(((bri / 100.00) * 255.000) + 0.5);
-			selector.x = ((int)((hue / 360.5) * 255.00) + 0.5);
-			selector.y = 255 - (int)((sat * 2.55) + 0.5);
-		}
-	}
-	else
-	{
-		if (im < 3) {
-			hsb_to_rgb(hue, sat, bri, currentColor.r, currentColor.g, currentColor.b);
-		}
-		else if (im < 6 || im == 7) {
-			rgb_to_hsb(currentColor.r, currentColor.g, currentColor.b, hue, sat, bri);
-		}
-		else if (im == 6) {
-			currentColor.set(hex);
-			rgb_to_hsb(currentColor.r, currentColor.g, currentColor.b, hue, sat, bri);
-		}
-
-		if (channel == 3) {
-			sideValue = currentColor.r;
-			selector.x = currentColor.b;
-			selector.y = 255 - currentColor.g;
-		}
-		else if (channel == 4) {
-			sideValue = currentColor.g;
-			selector.x = currentColor.b;
-			selector.y = 255 - currentColor.r;
-		}
-		else if (channel == 5) {
-			sideValue = currentColor.b;
-			selector.x = currentColor.r;
-			selector.y = 255 - currentColor.g;
-		}
-	}
-
-	update_main_palette();
-
-	if (im < 3)
-		currentColor = mainPalette.get_picked_color();
-
-	if (im != 6)
-		hex = to_whex(currentColor);
-
-	if (im == 7)
-		update_side_palette();
-
-	invalidate();*/
-}
-
 void UIColorPicker::select_channel(int channel) {
 	switch (channel) {
 	case 1: 
@@ -329,9 +236,9 @@ void UIColorPicker::process_event(OUI* element, uint32_t message, uint64_t param
 
 		if (element == &numHue || element == &numSat || element == &numBri) {
 			srcChannel = 0;
-			hue = atoi(numHue.get_number().str().c_str());
-			sat = atoi(numSat.get_number().str().c_str());
-			bri = atoi(numBri.get_number().str().c_str());
+			hue = atoi(numHue.get_number().c_str());
+			sat = atoi(numSat.get_number().c_str());
+			bri = atoi(numBri.get_number().c_str());
 			hsb_to_rgb(hue, sat, bri, currentColor.r, currentColor.g, currentColor.b);
 			reset = true;
 		}
@@ -341,9 +248,9 @@ void UIColorPicker::process_event(OUI* element, uint32_t message, uint64_t param
 				srcChannel = 6;
 			}
 			else srcChannel = 3;
-			currentColor.r = atoi(numRed.get_number().str().c_str());
-			currentColor.g = atoi(numGrn.get_number().str().c_str());
-			currentColor.b = atoi(numBlu.get_number().str().c_str());
+			currentColor.r = atoi(numRed.get_number().c_str());
+			currentColor.g = atoi(numGrn.get_number().c_str());
+			currentColor.b = atoi(numBlu.get_number().c_str());
 			reset = true;
 		}
 
@@ -490,7 +397,7 @@ void UIColorPicker::update_view(int triggerChannel, bool reset) {
 			sel.y = 255 - (int)((bri * 2.55) + 0.5);
 		}
 		else if (channel == 2) {
-			sel.x = ((int)((hue / 360.5) * 255.00) + 0.5);
+			sel.x = (int)(((hue / 360.5) * 255.00) + 0.5);
 			sel.y = 255 - (int)((sat * 2.55) + 0.5);
 		}
 		else if (channel == 3) {

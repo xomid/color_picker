@@ -31,8 +31,7 @@ void UIMainPalette::gen_hue(const Color& hint, bool bWebColor) {
 	byte* data = img.data, * d;
 	if (height != 256 && width != 256) return;
 
-	float n2, n3, r, g, b, * max, * min, * mean, m2, m3, qe, qi;
-	int he, hi;
+	float n2, n3, r, g, b, * max, * min, * mean, m2, m3;
 	byte br, bg, bb;
 	r = hint.r, g = hint.g, b = hint.b;
 
@@ -63,13 +62,13 @@ void UIMainPalette::gen_hue(const Color& hint, bool bWebColor) {
 	for (y = 0; y < 256; y++)
 	{
 		d = data + y * pitch;
-		*max = 255 - y;
+		*max = 255.f - y;
 		*mean = *max;
 		*min = *max;
 
 		//set the value that will be substracted in the horizontal directon
-		n2 = (*max - (m2 - y * (m2 / 255))) / 255;
-		n3 = (*max - (m3 - y * (m3 / 255))) / 255;
+		n2 = (*max - (m2 - y * (m2 / 255.f))) / 255.f;
+		n3 = (*max - (m3 - y * (m3 / 255.f))) / 255.f;
 
 		//let's fill the image
 		for (x = 0; x < 256; x++) {
@@ -78,9 +77,9 @@ void UIMainPalette::gen_hue(const Color& hint, bool bWebColor) {
 				*min -= n3;
 			}
 
-			br = CLAMP255((int)(r + 0.5));
-			bg = CLAMP255((int)(g + 0.5));
-			bb = CLAMP255((int)(b + 0.5));
+			br = CLAMP255((int)(r + .5f));
+			bg = CLAMP255((int)(g + .5f));
+			bb = CLAMP255((int)(b + .5f));
 
 			if (bWebColor) {
 				br = lookupWebColor[br];
@@ -102,14 +101,15 @@ void UIMainPalette::gen_hue_line_ns(int val)
 	int x;
 	byte* d = line;
 
-	float r, g, b, ins, im, max, min, h;
+	float r, g, b, ins, im, max, min, h, fval;
+	fval = (float)val;
 	ins = 1.00f;
-	r = 255;
-	g = 255 - val;
-	b = 255 - val;
-	im = val;
-	ins = im / 42.5;
-	max = 255 - ins, min = ins;
+	r = 255.f;
+	g = 255.f - fval;
+	b = 255.f - fval;
+	im = fval;
+	ins = im / 42.5f;
+	max = 255.f - ins, min = ins;
 
 	for (x = 0; x < 256; x++) {
 		if (x > 0 && x < 44)
@@ -118,8 +118,8 @@ void UIMainPalette::gen_hue_line_ns(int val)
 				g += ins;
 			else
 			{
-				h = 255 - g;
-				g = 255;
+				h = 255.f - g;
+				g = 255.f;
 				r -= ins - h;
 			}
 		}
@@ -129,8 +129,8 @@ void UIMainPalette::gen_hue_line_ns(int val)
 				r -= ins;
 			else
 			{
-				h = r - val;
-				r = val;
+				h = r - fval;
+				r = fval;
 				b += ins - h;
 			}
 		}
@@ -140,8 +140,8 @@ void UIMainPalette::gen_hue_line_ns(int val)
 				b += ins;
 			else
 			{
-				h = 255 - b;
-				b = 255;
+				h = 255.f - b;
+				b = 255.f;
 				g -= ins - h;
 			}
 		}
@@ -151,8 +151,8 @@ void UIMainPalette::gen_hue_line_ns(int val)
 				g -= ins;
 			else
 			{
-				h = g - val;
-				g = val;
+				h = g - fval;
+				g = fval;
 				r += ins - h;
 			}
 		}
@@ -162,8 +162,8 @@ void UIMainPalette::gen_hue_line_ns(int val)
 				r += ins;
 			else
 			{
-				h = 255 - r;
-				r = 255;
+				h = 255.f - r;
+				r = 255.f;
 				b -= ins - h;
 			}
 		}
@@ -173,21 +173,21 @@ void UIMainPalette::gen_hue_line_ns(int val)
 				b -= ins;
 			else
 			{
-				b = val;
+				b = fval;
 			}
 		}
 
-		/*if (!(r >= val && r <= 255))
-			if (r < val) r = val;
+		/*if (!(r >= fval && r <= 255))
+			if (r < fval) r = fval;
 			else r = 255;
-		if (!(g >= val && g <= 255))
-			if (g < val) g = val;
+		if (!(g >= fval && g <= 255))
+			if (g < fval) g = fval;
 			else g = 255;
-		if (!(b >= val && b <= 255))
-			if (b < val) b = val;
+		if (!(b >= fval && b <= 255))
+			if (b < fval) b = fval;
 			else b = 255;*/
 
-		* d++ = CLAMP255(int(b));
+		*d++ = CLAMP255(int(b));
 		*d++ = CLAMP255(int(g));
 		*d++ = CLAMP255(int(r));
 	}
@@ -197,13 +197,14 @@ void UIMainPalette::gen_hue_line_nb(int val)
 {
 	int x;
 	byte* d = line;
-	float r, g, b, ins, im, max, min, h;
+	float r, g, b, ins, im, max, min, h, fval;
 
+	fval = (float)val;
 	ins = 1.00f;
-	r = val; g = b = 0;
-	im = val;
-	ins = im / 42.5;
-	max = val - ins, min = ins;
+	r = fval; g = b = 0.f;
+	im = fval;
+	ins = im / 42.5f;
+	max = fval - ins, min = ins;
 
 	for (x = 0; x < 256; x++) {
 		if (x > 0 && x < 44)
@@ -212,8 +213,8 @@ void UIMainPalette::gen_hue_line_nb(int val)
 				g += ins;
 			else
 			{
-				h = val - g;
-				g = val;
+				h = fval - g;
+				g = fval;
 				r -= ins - h;
 			}
 		}
@@ -224,7 +225,7 @@ void UIMainPalette::gen_hue_line_nb(int val)
 			else
 			{
 				h = r;
-				r = 0;
+				r = 0.f;
 				b += ins - h;
 			}
 		}
@@ -234,8 +235,8 @@ void UIMainPalette::gen_hue_line_nb(int val)
 				b += ins;
 			else
 			{
-				h = val - b;
-				b = val;
+				h = fval - b;
+				b = fval;
 				g -= ins - h;
 			}
 		}
@@ -246,7 +247,7 @@ void UIMainPalette::gen_hue_line_nb(int val)
 			else
 			{
 				h = g;
-				g = 0;
+				g = 0.f;
 				r += ins - h;
 			}
 		}
@@ -256,8 +257,8 @@ void UIMainPalette::gen_hue_line_nb(int val)
 				r += ins;
 			else
 			{
-				h = val - r;
-				r = val;
+				h = fval - r;
+				r = fval;
 				b -= ins - h;
 			}
 		}
@@ -266,7 +267,7 @@ void UIMainPalette::gen_hue_line_nb(int val)
 			if (b >= min)
 				b -= ins;
 			else
-				b = 0;
+				b = 0.f;
 		}
 
 		*d++ = CLAMP255(int(b));
@@ -286,7 +287,6 @@ void UIMainPalette::_gen_sat(Sheet& sheet, int val, bool bWebColor) {
 
 	gen_hue_line_ns(val);
 
-	int f;
 	float b, g, r;
 	float nr, ng, nb;
 	byte* s;
@@ -306,14 +306,14 @@ void UIMainPalette::_gen_sat(Sheet& sheet, int val, bool bWebColor) {
 
 		for (y = 0; y < 256; y++) {
 			if (bWebColor) {
-				d[0] = CLAMP255(lookupWebColor[(int)(b + 0.5)]);
-				d[1] = CLAMP255(lookupWebColor[(int)(g + 0.5)]);
-				d[2] = CLAMP255(lookupWebColor[(int)(r + 0.5)]);
+				d[0] = CLAMP255(lookupWebColor[(int)(b + .5f)]);
+				d[1] = CLAMP255(lookupWebColor[(int)(g + .5f)]);
+				d[2] = CLAMP255(lookupWebColor[(int)(r + .5f)]);
 			}
 			else {
-				d[0] = CLAMP255((int)(b + 0.5));
-				d[1] = CLAMP255((int)(g + 0.5));
-				d[2] = CLAMP255((int)(r + 0.5));
+				d[0] = CLAMP255((int)(b + .5f));
+				d[1] = CLAMP255((int)(g + .5f));
+				d[2] = CLAMP255((int)(r + .5f));
 			}
 
 			r -= nr;
@@ -334,12 +334,11 @@ void UIMainPalette::_gen_bri(Sheet& sheet, int val, bool bWebColor) {
 	byte* data = sheet.data, * d;
 	if (height != 256 && width != 256) return;
 
-	int f;
 	float b, g, r;
 	float nr, ng, nb, max;
 	byte* s;
 
-	max = val;
+	max = (float)val;
 	gen_hue_line_nb(val);
 
 	//fill the image
@@ -351,24 +350,24 @@ void UIMainPalette::_gen_bri(Sheet& sheet, int val, bool bWebColor) {
 		g = *s++;
 		r = *s++;
 
-		nr = r / 255;
-		ng = g / 255;
-		nb = b / 255;
+		nr = r / 255.f;
+		ng = g / 255.f;
+		nb = b / 255.f;
 
-		nr = (max - r) / 255;
-		ng = (max - g) / 255;
-		nb = (max - b) / 255;
+		nr = (max - r) / 255.f;
+		ng = (max - g) / 255.f;
+		nb = (max - b) / 255.f;
 
 		for (y = 0; y < 256; y++) {
 			if (bWebColor) {
-				d[0] = lookupWebColor[CLAMP255(int(b + 0.5))];
-				d[1] = lookupWebColor[CLAMP255(int(g + 0.5))];
-				d[2] = lookupWebColor[CLAMP255(int(r + 0.5))];
+				d[0] = lookupWebColor[CLAMP255(int(b + .5f))];
+				d[1] = lookupWebColor[CLAMP255(int(g + .5f))];
+				d[2] = lookupWebColor[CLAMP255(int(r + .5f))];
 			}
 			else {
-				d[0] = CLAMP255((int)(b + 0.5));
-				d[1] = CLAMP255((int)(g + 0.5));
-				d[2] = CLAMP255((int)(r + 0.5));
+				d[0] = CLAMP255((int)(b + .5f));
+				d[1] = CLAMP255((int)(g + .5f));
+				d[2] = CLAMP255((int)(r + .5f));
 			}
 
 			r += nr;
@@ -394,7 +393,7 @@ void UIMainPalette::gen_red(int red, bool bWebColor) {
 	int width = img.w,
 		height = img.h,
 		pitch = img.pitch,
-		x, y, g, b;
+		g, b;
 	byte* data = img.data, * d;
 	if (height != 256 && width != 256) return;
 
@@ -426,7 +425,7 @@ void UIMainPalette::gen_grn(int grn, bool bWebColor) {
 	int width = img.w,
 		height = img.h,
 		pitch = img.pitch,
-		x, y, r, b;
+		r, b;
 	byte* data = img.data, * d;
 	if (height != 256 && width != 256) return;
 
@@ -458,7 +457,7 @@ void UIMainPalette::gen_blu(int blu, bool bWebColor) {
 	int width = img.w,
 		height = img.h,
 		pitch = img.pitch,
-		x, y, r, g;
+		r, g;
 	byte* data = img.data, * d;
 	if (height != 256 && width != 256) return;
 

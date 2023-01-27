@@ -16,8 +16,4 @@ static unsigned char lookupWebColor[256] = {
 
 void get_pixel(const Sheet& img, int x, int y, Color& res);
 
-void rgb_to_hsb(int red, int green, int blue, int& hue, int& sat, int& bri);
-
-void hsb_to_rgb(int hue, int sat, int bri, byte& red, byte& green, byte& blue);
-
 std::wstring to_whex(Color& color);
