@@ -254,8 +254,8 @@ void UIColorPicker::process_event(OUI* element, uint32_t message, uint64_t param
 			reset = true;
 		}
 
-		if (bWebColor != chkWebColor.bSelected) {
-			bWebColor = chkWebColor.bSelected;
+		if (bWebColor != chkWebColor.isSelected) {
+			bWebColor = chkWebColor.isSelected;
 			reset = true;
 		}
 
