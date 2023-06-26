@@ -19,7 +19,5 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
 	}
 	
 	auto wnd = wmg.get(0);
-	std::cout << "message from ocom: " << ocom::foo() << "\n";
-
 	return wmg.run();
 }
